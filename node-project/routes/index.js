@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const storeController = require('./../controllers/storeController');
+const { catchErrors } = require('./../handlers/errorHandlers');
 
 // Do work here
 // router.get('/', (req, res) => {
@@ -13,6 +14,8 @@ const storeController = require('./../controllers/storeController');
 //     title: 'ILFOOD'
 //   }); //first parameter is name of the template without extension. It must live inside whatever location is declared in app.js
 // });
-router.get('/', storeController.myMiddleware, storeController.homePage)
+router.get('/', storeController.homePage)
+router.get('/add', storeController.addStore)
+router.post('/add', catchErrors(storeController.createStore));
 
 module.exports = router;
