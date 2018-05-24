@@ -27,7 +27,26 @@ res.redirect(`/store/${store.slug}`);
 }
 
 exports.getStores = async (req, res) => {
-  let stores = await Store.find();
-  
+  let stores = await Store.find(); 
   res.render('displayStores', {title: 'Store list', stores});
+}
+
+exports.editStore = async (req, res) => {
+  let storeId = req.params.id;
+
+  let store = await Store.findOne({_id: storeId});
+  res.render('editStore', {title: `Edit store ${store.name}`, store});
+}
+
+exports.updateStore = async(req, res) => {
+  let storeId = req.params.id;
+  let store = await Store.findOneAndUpdate(
+    {_id: storeId},
+    req.body,
+    {new: true,
+    runValidators: true}
+  ).exec();
+
+  req.flash('success', `Store ${store.name} is updated`);
+  res.redirect(`/stores/${store._id}/edit`)
 }
