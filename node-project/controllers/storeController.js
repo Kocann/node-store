@@ -21,7 +21,13 @@ exports.createStore = async (req, res) => {
 
 // or pack it in some other function which will catch errors
 // like it is now done in routes/index.js
-const store = new Store(req.body);
-await store.save();
-res.redirect('/');
+const store = await (new Store(req.body)).save();
+req.flash('success', `Successfully saved store ${store.name}, would you like to leave a review`)
+res.redirect(`/store/${store.slug}`);
+}
+
+exports.getStores = async (req, res) => {
+  let stores = await Store.find();
+  
+  res.render('displayStores', {title: 'Store list', stores});
 }

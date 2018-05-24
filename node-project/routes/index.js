@@ -14,8 +14,9 @@ const { catchErrors } = require('./../handlers/errorHandlers');
 //     title: 'ILFOOD'
 //   }); //first parameter is name of the template without extension. It must live inside whatever location is declared in app.js
 // });
-router.get('/', storeController.homePage)
-router.get('/add', storeController.addStore)
+router.get('/', catchErrors(storeController.getStores));
+router.get('/stores', catchErrors(storeController.getStores));
+router.get('/add', storeController.addStore);
 router.post('/add', catchErrors(storeController.createStore));
 
 module.exports = router;
