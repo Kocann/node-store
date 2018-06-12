@@ -50,4 +50,18 @@ storeSchema.pre('save', async function(next) {
   next();
 })
 
+storeSchema.statics.getTagsList = function() {
+  return this.aggregate([
+    { $unwind: '$tags' }, //returns all documents wchich has tags property
+    { $group: // groups returned documents creating for each tag an object
+      { _id: '$tags', count: { $sum: 1 }  // witch _id property of tag, and count property of how many times the tag appears on all returned elemnts, 
+      }                                   // and for each occurence adds one (sums up)
+    },
+    { $sort: { // sort them by
+        count: -1 // count property, sort descending
+      }
+    }
+  ]);
+}
+
 module.exports = mongoose.model('Store', storeSchema); //setting model with the name of 'Store'
