@@ -3,8 +3,8 @@ const Schema = mongoose.Schema;
 mongoose.Promise = global.Promise;
 const md5 = require('md5');
 const validator = require('validator');
-const mongodbErrorHandler = require('mongoose-mongodb-erorrs');
-const passportLocalMongooose = require('password-local-mongoose');
+const mongodbErrorHandler = require('mongoose-mongodb-errors');
+const passportLocalMongooose = require('passport-local-mongoose');
 
 const userSchema = new Schema({
   email: {
@@ -12,7 +12,7 @@ const userSchema = new Schema({
     unique: true,
     lowercase: true,
     trim: true,
-    validate: [valiator.isEmail, 'please provide valid email address'],
+    validate: [validator.isEmail, 'please provide valid email address'],
     required: 'Please provide email address'
   },
   name: {

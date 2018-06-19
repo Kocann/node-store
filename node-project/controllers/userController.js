@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const User = mongoose.model('User');
+const promisify = require('es6-promisify');
 
 exports.loginForm = (req, res) => {
   res.render('login',  {title: 'Login'})
@@ -29,3 +31,12 @@ exports.validateRegister = (req, res, next) => {
   }
   next();
 };
+
+exports.register = async (req, res, next) => {
+  const user = new User({email: req.body.email, name: req.body.name});
+  // User.register(user, req.body.password, function(err, user) { //that's from passport - register method added to model
+  // });
+  const register = promisify(User.register, User); // methid and where it lives
+  await register(user, req.body.password); //it doesnt store user pass but hashed versions --> passport thing!
+  next();
+}
