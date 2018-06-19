@@ -22,6 +22,11 @@ const userSchema = new Schema({
   }
 });
 
+// generated dynamicaly field
+userSchema.virtual('gravatar').get(function(){
+  const hash = md5(this.email);
+  return `https://gravatar.com/avatar/${hash}?s=200`
+})
 userSchema.plugin(passportLocalMongooose,  {usernameField: 'email'}); //it takes care of creating password and so on
 userSchema.plugin(mongodbErrorHandler);
 

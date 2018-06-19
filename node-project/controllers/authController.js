@@ -5,4 +5,19 @@ exports.login = passport.authenticate('local', {
   failureFlash: 'Failed login',
   successRedirect: '/',
   successFlash: 'Successfylly logged in'
-})
+});
+
+exports.logout = (req, res) => {
+  req.logout();
+  req.flash('success', 'U are logout');
+  res.redirect('/');
+}
+
+exports.isLoggedIn = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    next();
+    return;
+  }
+  req.flash('error', 'M8 you have to logg in first')
+  res.redirect('/login');
+}

@@ -40,3 +40,22 @@ exports.register = async (req, res, next) => {
   await register(user, req.body.password); //it doesnt store user pass but hashed versions --> passport thing!
   next();
 }
+
+exports.account = (req, res) => {
+  res.render('account', {title: 'Edit your account'})
+};
+
+exports.updateAccount = async (req, res) => {
+  const updates = {
+    name: req.body.name,
+    email: req.body.email
+  }
+
+  const user = await User.findOneAndUpdate(
+    { _id: req.user._id},
+    { $set: updates }, 
+    { new: true, runValidators: true, context: 'query' }
+  )
+
+  res.redirect('back'); //redirect to where req came from
+}
