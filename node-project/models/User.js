@@ -19,7 +19,9 @@ const userSchema = new Schema({
     type: String,
     required: 'Please provide name',
     trim: true
-  }
+  },
+  resetPasswordToken: String,
+  resetPasswordExpires: Date 
 });
 
 // generated dynamicaly field
